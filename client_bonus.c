@@ -6,20 +6,20 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 22:59:19 by azainabi          #+#    #+#             */
-/*   Updated: 2024/02/01 02:06:53 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/02/02 10:38:11 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	handler(int sig)
+static void	handler(int sig)
 {
 	(void)sig;
 	ft_putstr_fd("\033[1;32mMessage Recieved.\033[1;0m\n", 1);
 	exit(1);
 }
 
-void	send_signal(char *pid, char *str)
+static void	send_signal(char *pid, char *str)
 {
 	int		i;
 	int		j;
@@ -33,11 +33,11 @@ void	send_signal(char *pid, char *str)
 		while (j >= 0)
 		{
 			if ((c >> j) & 1)
-				kill(ft_atoi(pid), SIGUSR1);
+				send_sig(ft_atoi(pid), SIGUSR1);
 			else
-				kill(ft_atoi(pid), SIGUSR2);
+				send_sig(ft_atoi(pid), SIGUSR2);
 			j--;
-			usleep(1000);
+			usleep(300);
 		}
 		i++;
 	}
@@ -47,6 +47,11 @@ int	main(int ac, char **av)
 {
 	struct sigaction	act;
 
+	if (ac < 3)
+	{
+		ft_putstr_fd("Usage: ./client [pid] [message]\n", 2);
+		exit(2);
+	}
 	if (ac == 3)
 	{
 		if (ft_atoi(av[1]) <= 0)

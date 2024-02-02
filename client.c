@@ -6,13 +6,13 @@
 /*   By: azainabi <azainabi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 01:02:05 by azainabi          #+#    #+#             */
-/*   Updated: 2024/02/01 02:06:25 by azainabi         ###   ########.fr       */
+/*   Updated: 2024/02/02 10:38:16 by azainabi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	send_signal(char *pid, char *str)
+static void	send_signal(char *pid, char *str)
 {
 	int		i;
 	int		j;
@@ -30,7 +30,7 @@ void	send_signal(char *pid, char *str)
 			else
 				kill(ft_atoi(pid), SIGUSR2);
 			j--;
-			usleep(1000);
+			usleep(300);
 		}
 		i++;
 	}
@@ -38,6 +38,11 @@ void	send_signal(char *pid, char *str)
 
 int	main(int ac, char **av)
 {
+	if (ac < 3)
+	{
+		ft_putstr_fd("Usage: ./client [pid] [message]\n", 2);
+		exit(2);
+	}
 	if (ac == 3)
 	{
 		if (ft_atoi(av[1]) <= 0)

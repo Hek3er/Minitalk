@@ -1,10 +1,10 @@
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
 
-SRC_C = client.c utilities.c
-SRC_S = server.c utilities.c
-BSRC_C = client_bonus.c utilities.c
-BSRC_S = server_bonus.c utilities.c
+SRC_C = client.c utilities.c signal.c
+SRC_S = server.c utilities.c signal.c
+BSRC_C = client_bonus.c utilities.c signal.c
+BSRC_S = server_bonus.c utilities.c signal.c
 
 OSRC_C = $(SRC_C:.c=.o)
 OSRC_S = $(SRC_S:.c=.o)
@@ -15,9 +15,6 @@ CLIENT = client
 SERVER = server
 B_CLIENT = client_bonus
 B_SERVER = server_bonus
-
-OBJT = $(OSRC_C) $(OSRC_S)
-BOBJT = $(OBSRC_C) $(OBSRC_S)
 
 HEADER = minitalk.h
 
@@ -53,5 +50,7 @@ clean:
 fclean: clean
 	@echo "Removing all"
 	@rm -rf $(CLIENT) $(SERVER) $(B_CLIENT) $(B_SERVER)
+
+re : fclean all
 
 .PHONY: clean
